@@ -17,8 +17,13 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
-    $router->get('/posts', 'PostController@index');
-    $router->post('/posts', 'PostController@store');
-    $router->put('/posts/{id}', 'PostController@update');
-    $router->delete('/posts/{id}', 'PostController@destroy');
+    $router->post('/login', 'AuthController@login');
+    $router->post('/register', 'AuthController@register');
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+        $router->get('/posts', 'PostController@index');
+        $router->post('/posts', 'PostController@store');
+        $router->put('/posts/{id}', 'PostController@update');
+        $router->delete('/posts/{id}', 'PostController@destroy');
+        $router->post('/logout', 'AuthController@logout');
+    });
 });
